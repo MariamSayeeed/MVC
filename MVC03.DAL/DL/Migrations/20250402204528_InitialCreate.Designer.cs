@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MVC03.DAL.Data.Migrations
+namespace MVC03.DAL.DL.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    [Migration("20250326124837_AddIdentityTables")]
-    partial class AddIdentityTables
+    [Migration("20250402204528_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
