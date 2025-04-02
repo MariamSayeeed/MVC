@@ -4,7 +4,9 @@ using MVC03.BLL.Interfaces;
 using MVC03.BLL.Repositories;
 using MVC03.DAL.Data.Contexts;
 using MVC03.DAL.Models;
+using MVC03.PL.Helpers;
 using MVC03.PL.Mapping;
+using MVC03.PL.Settings;
 
 namespace MVC03.PL
 {
@@ -23,23 +25,29 @@ namespace MVC03.PL
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                             .AddEntityFrameworkStores<CompanyDbContext>()
                             .AddDefaultTokenProviders();  // Enable Token
-           
+
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             }); // Allow Dependency Injection for CompanyDbContext
 
             //builder.Services.AddAutoMapper(typeof(EmployeeProfile));
-            builder.Services.AddAutoMapper(M=> M.AddProfile(new EmployeeProfile()));
-            builder.Services.AddAutoMapper(M=> M.AddProfile(new DepartmentProfile()));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new DepartmentProfile()));
 
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = ("/Account/SignIn");
             });
 
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+            builder.Services.AddScoped<IMailService, MailService>();
 
-            ////-  Build --------
+            //builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection(nameof(TwilioSettings)));
+            //builder.Services.AddScoped<ITwilioService, TwilioService>();
+
+
+            ////- -------------------------------   Build --------
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
